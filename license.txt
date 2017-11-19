@@ -1,1 +1,11 @@
-Copyrighted Material - 2017 to Visweswaran Nagasivam
+The software is licensed under GPL 2.0 License. It contains research material and the code which is copy righted to 
+
+Visweswaran Nagasivam
+
+1/303.1 M.M.Nagar,
+
+Thiruppalai,
+
+Madurai-14.
+
+Contact: visweswaran.nagasivam98@gmail.com for commercial use of the code and research.
