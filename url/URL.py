@@ -11,7 +11,6 @@ class URL:
     ------------
     This class is used to perform any URL related operations
     """
-
     def get_request(self, url, user_agent=None):
         """
         Description:
@@ -35,8 +34,6 @@ class URL:
         except requests.exceptions.MissingSchema:
             return None
         except requests.exceptions.InvalidURL:
-            return None
-        except:
             return None
 
     def post_request(self, url, data, user_agent=None):
