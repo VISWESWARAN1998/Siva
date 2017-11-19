@@ -1,0 +1,13 @@
+<!-- SWAMI KARUPPASWAMI THUNNAI -->
+
+<html>
+	<head>
+		<title>Siva Vulnerability Scanner</title>
+	</head>
+	<body>
+		<h1>Siva Vulnerability Scanning Server v0.1:</h1>
+		<h2><u>Chapter-1: Information Gathering</u></h2>
+		<p>			Information gathering(in penetration testing) is the act of collecting various valuabe informations from the remote host. The more information we obtain it from a server the more specific an attack can be crafted, vulnerabilities can be exploited. So Siva handles various methodologies to gather the information about the web-server.</p>
+
+	</body>
+</html>
