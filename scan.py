@@ -11,6 +11,7 @@ def check_for_vulnerabilities(connection, project_id, url):
     """First phase of Information gathering"""
     thread_semaphore = threading.Semaphore(100)
     database_semaphore = threading.Semaphore(100)
+    print("[*] Gathering PHASE-1 INFORMATION")
     information_gathering = web_server_informtaion.WebServerInformation(project_id=project_id, connection=connection,
                                                                         thread_semaphore=thread_semaphore,
                                                                         database_semaphore=database_semaphore, url=url)
@@ -18,7 +19,7 @@ def check_for_vulnerabilities(connection, project_id, url):
 
 
 def main():
-    print("Siva Vulnerability Scanner v1.0")
+    print("Siva Vulnerability Scanner v0.1")
     password = input("Enter the password: ")
     connection = pymysql.connect(host="localhost", user="root", password=password,
                                  db="siva")

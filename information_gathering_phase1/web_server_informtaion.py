@@ -160,4 +160,6 @@ class WebServerInformation(FirewallInformation):
         args = (self.__project_id, "PRELIMINARY", self.__ip, self.__webserver_name,
                               self.__webserver_os, self.__programming_language_used,
                               self.__firwall)
-        SivaDB().add_info_gathering_phase_one(connection=self.__connection, query=query, args=args)
+        # A thread to add the information to the database
+        database_adding_thread = Thread(target=SivaDB().add_info_gathering_phase_one, args=(self.__database_semaphore, self.__connection, query, args))
+        database_adding_thread.start()
