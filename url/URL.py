@@ -11,6 +11,24 @@ class URL:
     ------------
     This class is used to perform any URL related operations
     """
+    
+    def get_status(self, url, user_agent=None):
+        """This Method is to specially bruteforce the URL here the get method has been replaced
+        by the head method since while bruteforcing we only need to know that the status code must
+        not be 404<Not found> or 403<Access Forbidden> """
+        try:
+            r = requests.head(url=url, headers=user_agent)
+            if r.status_code != 400 or r.status_code != 403:
+                return r.url
+            else:
+                return None
+        except requests.ConnectionError:
+            self.get_status(url=url, user_agent=user_agent)
+        except requests.exceptions.MissingSchema:
+            return None
+        except requests.exceptions.InvalidURL:
+            return None
+
 
     def get_request(self, url, user_agent=None):
         """
@@ -169,4 +187,3 @@ class URL:
         :return: None
         """
         return urlparse(url).scheme
-
