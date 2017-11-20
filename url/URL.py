@@ -11,7 +11,22 @@ class URL:
     ------------
     This class is used to perform any URL related operations
     """
-
+    def get_status(self, url, user_agent=None):
+        """This Method is to specially bruteforce the URL here the get method has been replaced
+        by the head method since while bruteforcing we only need to know that the status code must
+        not be 404<Not found> or 403<Access Forbidden> """
+        try:
+            r = requests.head(url=url, headers=user_agent)
+            if r.status_code != 400 or r.status_code != 403:
+                return r.url
+            else:
+                return None
+        except requests.ConnectionError:
+            self.get_status(url=url, user_agent=user_agent)
+        except requests.exceptions.MissingSchema:
+            return None
+        except requests.exceptions.InvalidURL:
+            return None        
     def get_request(self, url, user_agent=None):
         """
         Description:
@@ -38,7 +53,6 @@ class URL:
             return None
         except:
             return None
-
     def post_request(self, url, data, user_agent=None):
         """
         Description:
@@ -64,7 +78,6 @@ class URL:
             return None
         except requests.exceptions.InvalidURL:
             return None
-
     def get_file_name(self, url):
         """
         Description:
@@ -84,7 +97,6 @@ class URL:
         file_name = url_path.path.split("/")[-1]
         file_name = file_name.strip() if "." in file_name else None
         return file_name
-
     def is_same_domain(self, url1, url2):
         """
         Description:
@@ -105,7 +117,6 @@ class URL:
         if domain1.netloc == domain2.netloc:
             return True
         return False
-
     def is_query_present(self, url):
         """
         Description:
@@ -118,7 +129,6 @@ class URL:
         if len(query.query) > 0:
             return True
         return False
-
     def join_urls(self, url1, url2):
         """
         Description:
@@ -131,7 +141,6 @@ class URL:
         :return: joined url
         """
         return urljoin(url1, url2)
-
     def get_ip(self, url):
         """
         This method will return the I.P address for the url provied
@@ -146,7 +155,6 @@ class URL:
         except socket.gaierror:
             ip = None
         return ip
-
     def get_host_name(self, url):
         """
         This method is used to get the host name for the url
@@ -162,11 +170,9 @@ class URL:
         https://www.google.com will return www.google.com
         """
         return urlparse(url).hostname
-
     def get_scheme(self, url):
         """
         :param url: The url for which the scheme is to be returned
         :return: None
         """
         return urlparse(url).scheme
-
