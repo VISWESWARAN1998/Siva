@@ -1,0 +1,3 @@
+PyMySQL        : https://github.com/PyMySQL/PyMySQL is licensed under MIT
+requests       : https://github.com/requests/requests is licensed under Apache 2.0
+BeautifulSoup4 : https://pypi.python.org/pypi/beautifulsoup4 is licensed under MIT
