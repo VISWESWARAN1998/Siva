@@ -6,10 +6,10 @@ import requests
 from concurrent.futures import ThreadPoolExecutor
 from information_gathering_phase1.firewall_info import FirewallInformation
 from threading import Thread
-from siva_db import SivaDB
+from information_gathering_phase1.database import InfoGatheringPhaseOneDatabase
 
 
-class WebServerInformation(FirewallInformation):
+class WebServerInformation(FirewallInformation, InfoGatheringPhaseOneDatabase):
     """
     Description:
     =============
@@ -161,5 +161,5 @@ class WebServerInformation(FirewallInformation):
                               self.__webserver_os, self.__programming_language_used,
                               self.__firwall)
         # A thread to add the information to the database
-        database_adding_thread = Thread(target=SivaDB().add_info_gathering_phase_one, args=(self.__database_semaphore, self.__connection, query, args))
+        database_adding_thread = Thread(target=self.add_info_gathering_phase_one, args=(self.__database_semaphore, self.__connection, query, args))
         database_adding_thread.start()

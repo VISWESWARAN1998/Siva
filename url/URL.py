@@ -36,7 +36,7 @@ class URL:
             return None
         except requests.exceptions.InvalidURL:
             return None
-        except:
+        except Exception:
             return None
 
     def post_request(self, url, data, user_agent=None):
@@ -63,6 +63,8 @@ class URL:
         except requests.exceptions.MissingSchema:
             return None
         except requests.exceptions.InvalidURL:
+            return None
+        except Exception:
             return None
 
     def get_file_name(self, url):

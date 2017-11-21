@@ -19,7 +19,7 @@ def check_for_vulnerabilities(connection, project_id, url):
 
 
 def main():
-    print("Siva Vulnerability Scanner v0.1")
+    print("Siva Vulnerability Scanner v1.0")
     password = input("Enter the password: ")
     connection = pymysql.connect(host="localhost", user="root", password=password,
                                  db="siva")
