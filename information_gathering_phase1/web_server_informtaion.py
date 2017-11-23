@@ -28,7 +28,7 @@ class WebServerInformation(FirewallInformation, InfoGatheringPhaseOneDatabase):
     __database_semaphore = None
     __url = None
     __ip = None
-    __firwall = None
+    __firewall = None
     __webserver_name = None
     __webserver_os = None
     __programming_language_used = None
@@ -60,7 +60,7 @@ class WebServerInformation(FirewallInformation, InfoGatheringPhaseOneDatabase):
         :return:
         """
         self.__thread_semaphore.acquire()
-        self.__firwall = FirewallInformation().get_info(url=self.__url, ip=self.__ip)
+        self.__firewall = FirewallInformation().get_info(url=self.__url, ip=self.__ip)
         self.__thread_semaphore.release()
 
     def __get_server_header(self):
@@ -126,7 +126,7 @@ class WebServerInformation(FirewallInformation, InfoGatheringPhaseOneDatabase):
         """
         @ This stage we have acquired self.__url, self.__ip and self.__firewall
         """
-        if self.__firwall is None:
+        if self.__firewall is None:
             server_name = Thread(target=self.__get_server_header)
             server_name.start()
             server_name.join()
@@ -143,7 +143,7 @@ class WebServerInformation(FirewallInformation, InfoGatheringPhaseOneDatabase):
         print("DOMAIN:   ", URL().get_host_name(self.__url))
         print("SERVER:   ", self.__webserver_name)
         print("OS:       ", self.__webserver_os)
-        print("Firewall: ", self.__firwall)
+        print("Firewall: ", self.__firewall)
         print("Language: ", self.__programming_language_used)
         if self.__ip is None:
             self.__ip = "None"
@@ -153,13 +153,14 @@ class WebServerInformation(FirewallInformation, InfoGatheringPhaseOneDatabase):
             self.__webserver_os = "None"
         if self.__programming_language_used is None:
             self.__programming_language_used = "None"
-        if self.__firwall is None:
-            self.__firwall = "None"
+        if self.__firewall is None:
+            self.__firewall = "None"
         # Now add the information to database
         query = "insert into info_gathering values(%s,%s,%s,%s,%s,%s,%s)"
         args = (self.__project_id, "PRELIMINARY", self.__ip, self.__webserver_name,
                               self.__webserver_os, self.__programming_language_used,
-                              self.__firwall)
+                              self.__firewall)
         # A thread to add the information to the database
         database_adding_thread = Thread(target=self.add_info_gathering_phase_one, args=(self.__database_semaphore, self.__connection, query, args))
         database_adding_thread.start()
+        database_adding_thread.join()

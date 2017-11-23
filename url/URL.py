@@ -67,7 +67,8 @@ class URL:
         except Exception:
             return None
 
-    def get_file_name(self, url):
+    @staticmethod
+    def get_file_name(url):
         """
         Description:
         ------------
@@ -87,7 +88,8 @@ class URL:
         file_name = file_name.strip() if "." in file_name else None
         return file_name
 
-    def is_same_domain(self, url1, url2):
+    @staticmethod
+    def is_same_domain(url1, url2):
         """
         Description:
         -------------
@@ -121,7 +123,8 @@ class URL:
             return True
         return False
 
-    def join_urls(self, url1, url2):
+    @staticmethod
+    def join_urls(url1, url2):
         """
         Description:
         ------------

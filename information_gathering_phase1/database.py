@@ -32,7 +32,8 @@ class InfoGatheringPhaseOneDatabase:
         finally:
             database_semaphore.release()  # No matter what happens release the semaphore
 
-    def get_info_gathering_phase_one(self, project_id, connection):
+    @staticmethod
+    def get_info_gathering_phase_one(project_id, connection):
         """
         This method is used to get all the information from phase 1
         :param project_id:
@@ -51,7 +52,8 @@ class InfoGatheringPhaseOneDatabase:
             print(e)
             return None
 
-    def update_status(self, database_semaphore, connection, project_id, status):
+    @staticmethod
+    def update_status(database_semaphore, connection, project_id, status):
         """
         Used to update the ip address in the info gathering database
         :param database_semaphore:
@@ -71,7 +73,8 @@ class InfoGatheringPhaseOneDatabase:
             print(e)
         database_semaphore.release()
 
-    def update_ip(self, database_semaphore, connection, project_id, new_ip):
+    @staticmethod
+    def update_ip(database_semaphore, connection, project_id, new_ip):
         """
         Used to update the ip address in the info gathering database
         :param database_semaphore:
@@ -91,7 +94,8 @@ class InfoGatheringPhaseOneDatabase:
             print(e)
         database_semaphore.release()
 
-    def update_webserver_name(self, database_semaphore, connection, project_id, new_webserver_name):
+    @staticmethod
+    def update_webserver_name(database_semaphore, connection, project_id, new_webserver_name):
         """
         Used to update the ip address in the info gathering database
         :param database_semaphore:
@@ -111,7 +115,8 @@ class InfoGatheringPhaseOneDatabase:
             print(e)
         database_semaphore.release()
 
-    def update_server_os(self, database_semaphore, connection, project_id, server_os):
+    @staticmethod
+    def update_server_os(database_semaphore, connection, project_id, server_os):
         """
         Used to update the ip address in the info gathering database
         :param database_semaphore:
@@ -131,7 +136,8 @@ class InfoGatheringPhaseOneDatabase:
             print(e)
         database_semaphore.release()
 
-    def update_programming_language(self, database_semaphore, connection, project_id, programming_language):
+    @staticmethod
+    def update_programming_language(database_semaphore, connection, project_id, programming_language):
         """
         Used to update the ip address in the info gathering database
         :param database_semaphore:
@@ -148,10 +154,12 @@ class InfoGatheringPhaseOneDatabase:
            connection.commit()
            print("[+] PROGRAMMING LANGUAGE HAS BEEN UPDATED SUCCESSFULLY")
         except Exception as e:
+            print("Exception: ")
             print(e)
         database_semaphore.release()
 
-    def update_firewall(self, database_semaphore, connection, project_id, firewall_name):
+    @staticmethod
+    def update_firewall(database_semaphore, connection, project_id, firewall_name):
         """
         Used to update the ip address in the info gathering database
         :param database_semaphore:

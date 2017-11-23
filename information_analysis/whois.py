@@ -6,9 +6,17 @@ class WhoIs:
     """
     This calss is used to get the whois information of the I.P address
     """
-    def get_whois(self, ip):
-        """
-        :param ip: The I.P address for which the whois is needed
-        :return:
-        """
-        pass
+    __domain = None  # The domain for which the who is information is need to be gathered
+
+    def __init__(self, domain):
+        self.__domain = domain
+
+    def get_whois(self):
+        try:
+            whois = pythonwhois.get_whois(domain=self.__domain)
+            return whois
+        except Exception:
+            return None
+
+
+
