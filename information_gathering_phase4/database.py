@@ -14,6 +14,6 @@ class AdminPageDatabase:
             cursor.execute("insert into admin_page values(%s,%s)", (project_id, url))
             connection.commit()
             return True
-        except Exception as e:
+        except Exception:
             return False
         database_semaphore.release()
