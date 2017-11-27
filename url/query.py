@@ -25,24 +25,8 @@ class Query:
                     # Increase the value by so that we can decrement and check it
                     check_for_integer+=1
                     payloaded_query = str(check_for_integer)+"-1"
-                    final_payload = {query: payloaded_query}
-                    partial_url = url_parsed.scheme + "://" + url_parsed.netloc + url_parsed.path + "?"
-                    for new_query in queries:
-                        if new_query in final_payload:
-                            new_url = new_query + "=" + final_payload[new_query]
-                            partial_url+=new_url
-                            partial_url+="&"
-                        else:
-                            values = queries[new_query]
-                            if len(values) > 0:
-                                new_url = new_query + "=" + values[0]
-                            else:
-                                new_url = new_query + "="
-                            partial_url += new_url
-                            partial_url += "&"
-                    final_url = partial_url[:-1]
-                    if final_url not in final_urls:
-                        final_urls.append(final_url)
+                    Query.create_payload(query=query, payloaded_query=payloaded_query, url_parsed=url_parsed,
+                                         queries=queries, final_urls=final_urls)
                     # Now we will append the urls
                 except ValueError:
                     pass
@@ -63,24 +47,8 @@ class Query:
                     # Decrese the value by  1 so that we can increment and check it
                     check_for_integer-=1
                     payloaded_query = str(check_for_integer)+"%2b1"  # In url encoding + is used for whitespaces where as %2b is a + operator
-                    final_payload = {query: payloaded_query}
-                    partial_url = url_parsed.scheme + "://" + url_parsed.netloc + url_parsed.path + "?"
-                    for new_query in queries:
-                        if new_query in final_payload:
-                            new_url = new_query + "=" + final_payload[new_query]
-                            partial_url+=new_url
-                            partial_url+="&"
-                        else:
-                            values = queries[new_query]
-                            if len(values) > 0:
-                                new_url = new_query + "=" + values[0]
-                            else:
-                                new_url = new_query + "="
-                            partial_url += new_url
-                            partial_url += "&"
-                    final_url = partial_url[:-1]
-                    if final_url not in final_urls:
-                        final_urls.append(final_url)
+                    Query.create_payload(query=query, payloaded_query=payloaded_query, url_parsed=url_parsed,
+                                         queries=queries, final_urls=final_urls)
                     # Now we will append the urls
                 except ValueError:
                     pass
@@ -101,24 +69,8 @@ class Query:
                 try:
                     value = int(value[0])
                     payloaded_query = str(value)+payload  # add the payload here
-                    final_payload = {query: payloaded_query}
-                    partial_url = url_parsed.scheme + "://" + url_parsed.netloc + url_parsed.path + "?"
-                    for new_query in queries:
-                        if new_query in final_payload:
-                            new_url = new_query + "=" + final_payload[new_query]
-                            partial_url+=new_url
-                            partial_url+="&"
-                        else:
-                            values = queries[new_query]
-                            if len(values) > 0:
-                                new_url = new_query + "=" + values[0]
-                            else:
-                                new_url = new_query + "="
-                            partial_url += new_url
-                            partial_url += "&"
-                    final_url = partial_url[:-1]
-                    if final_url not in final_urls:
-                        final_urls.append(final_url)
+                    Query.create_payload(query=query, payloaded_query=payloaded_query, url_parsed=url_parsed,
+                                         queries=queries, final_urls=final_urls)
                     # Now we will append the urls
                 except ValueError:
                     pass
@@ -139,29 +91,35 @@ class Query:
                 try:
                     value = int(value[0])
                     payloaded_query = payload  # replace the payload here
-                    final_payload = {query: payloaded_query}
-                    partial_url = url_parsed.scheme + "://" + url_parsed.netloc + url_parsed.path + "?"
-                    for new_query in queries:
-                        if new_query in final_payload:
-                            new_url = new_query + "=" + final_payload[new_query]
-                            partial_url+=new_url
-                            partial_url+="&"
-                        else:
-                            values = queries[new_query]
-                            if len(values) > 0:
-                                new_url = new_query + "=" + values[0]
-                            else:
-                                new_url = new_query + "="
-                            partial_url += new_url
-                            partial_url += "&"
-                    final_url = partial_url[:-1]
-                    if final_url not in final_urls:
-                        final_urls.append(final_url)
+                    Query.create_payload(query=query, payloaded_query=payloaded_query, url_parsed=url_parsed,
+                                         queries=queries, final_urls=final_urls)
                     # Now we will append the urls
                 except ValueError:
                     pass
         # final_urls is a python list which contains payloaded urls
         return final_urls    
+
+    @staticmethod
+    def create_payload(query, payloaded_query, url_parsed, queries, final_urls):
+        final_payload = {query: payloaded_query}
+        partial_url = url_parsed.scheme + "://" + url_parsed.netloc + url_parsed.path + "?"
+        for new_query in queries:
+            if new_query in final_payload:
+                new_url = new_query + "=" + final_payload[new_query]
+                partial_url += new_url
+                partial_url += "&"
+            else:
+                values = queries[new_query]
+                if len(values) > 0:
+                    new_url = new_query + "=" + values[0]
+                else:
+                    new_url = new_query + "="
+                partial_url += new_url
+                partial_url += "&"
+        final_url = partial_url[:-1]
+        if final_url not in final_urls:
+            final_urls.append(final_url)
+
 
     def encode_payload(self, payload):
         """
@@ -190,5 +148,3 @@ class Query:
         payload = payload.replace("]","%5D")
         # Now we have the encoded payload
         return payload
-    
-        
