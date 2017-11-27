@@ -64,6 +64,7 @@ class PhaseTwoAnalysis:
                     if "U" in content[0]:
                         self.__robots_preprocessed_file.write(content+"\n")
                     else:
+                        full_content = ""  # Minor fix @v0.2
                         if "D" in content[0]:
                             content = content.replace("Disallow:", "")
                             content = content.strip()
