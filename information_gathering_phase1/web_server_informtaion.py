@@ -55,7 +55,10 @@ class WebServerInformation(InfoGatheringPhaseOneDatabase):
             ip = executor.submit(URL().get_ip, self.__url)
             self.__ip = ip.result()
         # we will get the headers of the request
-        self.__headers = URL().get_head_request(url=self.__url, user_agent=UserAgent.get_user_agent()).headers
+        if URL().get_head_request(url=self.__url, user_agent=UserAgent.get_user_agent()) is not None:
+            self.__headers = URL().get_head_request(url=self.__url, user_agent=UserAgent.get_user_agent()).headers
+        else:
+            self.__headers = ""
 
     def __check_for_firewall(self):
         """
