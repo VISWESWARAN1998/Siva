@@ -72,7 +72,7 @@ class InfoGatheringPhaseFour(AdminPageDatabase):
         """
         r = URL().get_head_request(url=url, user_agent=UserAgent.get_user_agent())
         try:
-            if r.status_code == 200:
+            if r.status_code == 200 or r.status_code == 302:
                 if url not in self.__admin_pages:
                     self.__admin_pages.append(url)
         except AttributeError:
