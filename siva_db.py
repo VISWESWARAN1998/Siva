@@ -18,12 +18,13 @@ class SivaDB:
         This method is used to install the database
         :return: True if the database has been installed successfully
         """
+        user_name = input("USER NAME: ")
         password = getpass.getpass()
-        connection = pymysql.connect(host="localhost", user="root", password=password)
+        connection = pymysql.connect(host="localhost", user=user_name, password=password)
         cursor = connection.cursor()
         print("[+] CREATING A DATABASE")
-        cursor.execute("create database if not exists temp")
-        cursor.execute("use temp")
+        cursor.execute("create database if not exists siva")
+        cursor.execute("use siva")
         ports_table = "create table if not exists port(project_id int(10), port_no int(6))"
         raw_info_table = "create table if not exists raw_information(project_id int(10), info_source varchar(1000), information longtext)"
         admin_page_table = "create table if not exists admin_page(project_id int(10), url varchar(1000))"
@@ -33,13 +34,21 @@ class SivaDB:
         self.execute_query(connection, raw_info_table)
         print("[+] CREATING ADMIN PAGE")
         self.execute_query(connection, admin_page_table)
+        print("[+] CREATING INFO GATHERING TABLE")
+        self.execute_query(connection, "create table if not exists info_gathering(project_id int(10) primary key, status varchar(100), ip varchar(100), webserver_name varchar(100), server_os varchar(100), programming_language varchar(150), firewall_name varchar(100));")
+        print("[+] CREATING PROJECTS TABLE")
+        self.execute_query(connection, "create table if not exists project(project_id int(10) primary key, domain varchar(1000))")
+        print("[+] CREATING RESULT TABLE")
+        self.execute_query(connection, "create table if not exists result(project_id int(10), phase_name varchar(30))")
+        print("[+] SIVA HAS BEEN INSTALLED")
+
 
 
     def execute_query(self, connection, query):
         """
         Dexcription:
         ============
-        This method will blindly execute the sql query so use it carefully.
+        This method will blindly execute the data_stores query so use it carefully.
         Parameters:
         ===========
         :param cursor: pymysql cursor object

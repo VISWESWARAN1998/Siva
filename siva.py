@@ -14,6 +14,7 @@ from information_gathering_phase2.host_discovery import PortScan
 from locals.directory import Directory
 from information_gathering_phase3.info_gathering_phase_three import InfoGatheringPhasethree
 from information_gathering_phase4.info_gathering_phase_four import InfoGatheringPhaseFour
+from information_analysis.phase_three_analysis import PhaseThreeAnalysis
 
 
 def check_for_vulnerabilities(connection, project_id, url):
@@ -58,6 +59,19 @@ def check_for_vulnerabilities(connection, project_id, url):
                      database_semaphore=database_semaphore, connection=connection)
     SivaDB.update_result(connection=connection, project_id=project_id, phase_id="IA-PHASE-2")
 
+    # ============================ INFORMATION ANALYSIS PHASE - 3 ==========================
+    print("[+] INFORMATION ANALYSIS PHASE - 3 HAS BEEN STARTED")
+    info_result = InfoGatheringPhaseOneDatabase.get_info_gathering_phase_one(project_id=project_id,
+                                                                        connection=connection)
+    webserver_name = None  # At this stage we should have the name of the webserver
+    programming_language = None # and also the name of the programming language
+    info_result = info_result[0]
+    if info_result is not None:
+        webserver_name = info_result[3]
+        programming_language = info_result[5]
+    PhaseThreeAnalysis(project_id=project_id, webserver_name=webserver_name, programming_language=programming_language,
+                       thread_semaphore=thread_semaphore, database_semaphore=database_semaphore)
+
     # ============================= INFORMATION GATHERING PHASE - 4 =========================
     print("[+] INFORMATION GATHERING PHASE - 4 HAS BEEN STARTED")
     InfoGatheringPhaseFour(project_id=project_id, url=url, thread_semaphore=thread_semaphore,
@@ -70,9 +84,10 @@ def check_for_vulnerabilities(connection, project_id, url):
 
 def main():
     print("Siva Vulnerability Scanner v1.0")
+    user_name = input("USER NAME: ")
     password = getpass.getpass()
     try:
-        connection = pymysql.connect(host="localhost", user="root", password=password,
+        connection = pymysql.connect(host="localhost", user=user_name, password=password,
                                      db="siva")
     except pymysql.err.OperationalError:
         print("[-] WRONG PASSWORD. EXITING...")

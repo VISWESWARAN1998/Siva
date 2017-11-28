@@ -20,6 +20,29 @@ class File:
             print("[-] MISSING PERMISSIONS CANNOT WRITE INTO THE FILE")
 
     @staticmethod
+    def write_to_list(file_location, contents):
+        """
+        Description:
+        -------------
+        This method will write the content of the list to the local file
+        :param file_location: The location of the file
+        :param content: the python list to be written
+        :return:
+        """
+        try:
+            file = codecs.open(filename=file_location, encoding="utf-8", mode="w")
+            for content in contents:
+                try:
+                    file.write(str(content))
+                except:
+                    pass
+            file.close()
+        except FileNotFoundError:
+            print("[-] CANNOT WRITE TO FILE. LOCATION INVALID")
+        except PermissionError:
+            print("[-] MISSING PERMISSIONS CANNOT WRITE INTO THE FILE")
+
+    @staticmethod
     def read_to_list(file_location):
         """
         Description:

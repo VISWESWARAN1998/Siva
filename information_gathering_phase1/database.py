@@ -17,8 +17,8 @@ class InfoGatheringPhaseOneDatabase:
     def add_info_gathering_phase_one(database_semaphore, connection, query, arguments):
         """
         :param connection: The mysql connection object
-        :param query: the sql query
-        :param arguments: parameters for the sql query
+        :param query: the data_stores query
+        :param arguments: parameters for the data_stores query
         :param database_semaphore: a semaphore to control the threads
         :return:
         """

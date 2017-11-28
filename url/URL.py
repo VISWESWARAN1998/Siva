@@ -96,6 +96,34 @@ class URL:
         except Exception:
             return None
 
+    def session_get_request(self, session, url, user_agent=None):
+        """
+        Description:
+        ------------
+        This method will try its level best to get the requests object(as GET request) using the
+        session object of the  requests else, This method will return None.
+        This method is considered to be safest since all exceptions are sanitized properly.
+        Parameters:
+        -----------
+        :param url: The url for which the requests object is to be returned
+        :param user_agent: The user_agent to be used
+        Returns:
+        ---------
+        :return: Will return the requests object if possible else it will return None
+        """
+        try:
+            r = session.get(url=url, headers=user_agent)
+            return r
+        except requests.ConnectionError:
+            self.session_get_request(session=session, url=url, user_agent=user_agent)
+        except requests.exceptions.MissingSchema:
+            return None
+        except requests.exceptions.InvalidURL:
+            return None
+        except Exception:
+            return None
+
+
     @staticmethod
     def get_file_name(url):
         """

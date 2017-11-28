@@ -1,4 +1,4 @@
-# SWAMI KARUPPASWAMM THUNNAI
+# SWAMI KARUPPASWAMI THUNNAI
 
 import socket
 from threading import Thread
