@@ -3,6 +3,7 @@
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
 
+
 class Query:
     """
     Description:
@@ -23,10 +24,14 @@ class Query:
                 try:
                     check_for_integer = int(value[0])
                     # Increase the value by so that we can decrement and check it
-                    check_for_integer+=1
-                    payloaded_query = str(check_for_integer)+"-1"
-                    Query.create_payload(query=query, payloaded_query=payloaded_query, url_parsed=url_parsed,
-                                         queries=queries, final_urls=final_urls)
+                    check_for_integer += 1
+                    payloaded_query = str(check_for_integer) + "-1"
+                    Query.create_payload(
+                        query=query,
+                        payloaded_query=payloaded_query,
+                        url_parsed=url_parsed,
+                        queries=queries,
+                        final_urls=final_urls)
                     # Now we will append the urls
                 except ValueError:
                     pass
@@ -45,10 +50,16 @@ class Query:
                 try:
                     check_for_integer = int(value[0])
                     # Decrese the value by  1 so that we can increment and check it
-                    check_for_integer-=1
-                    payloaded_query = str(check_for_integer)+"%2b1"  # In url encoding + is used for whitespaces where as %2b is a + operator
-                    Query.create_payload(query=query, payloaded_query=payloaded_query, url_parsed=url_parsed,
-                                         queries=queries, final_urls=final_urls)
+                    check_for_integer -= 1
+                    payloaded_query = str(
+                        check_for_integer
+                    ) + "%2b1"  # In url encoding + is used for whitespaces where as %2b is a + operator
+                    Query.create_payload(
+                        query=query,
+                        payloaded_query=payloaded_query,
+                        url_parsed=url_parsed,
+                        queries=queries,
+                        final_urls=final_urls)
                     # Now we will append the urls
                 except ValueError:
                     pass
@@ -68,15 +79,20 @@ class Query:
             if len(value) > 0:
                 try:
                     value = int(value[0])
-                    payloaded_query = str(value)+payload  # add the payload here
-                    Query.create_payload(query=query, payloaded_query=payloaded_query, url_parsed=url_parsed,
-                                         queries=queries, final_urls=final_urls)
+                    payloaded_query = str(
+                        value) + payload  # add the payload here
+                    Query.create_payload(
+                        query=query,
+                        payloaded_query=payloaded_query,
+                        url_parsed=url_parsed,
+                        queries=queries,
+                        final_urls=final_urls)
                     # Now we will append the urls
                 except ValueError:
                     pass
         # final_urls is a python list which contains payloaded urls
         return final_urls
-    
+
     def replace_payload_to_all_queries(self, url, payload):
         """
         This method will add the payload to all the queries
@@ -91,16 +107,21 @@ class Query:
                 try:
                     value = int(value[0])
                     payloaded_query = payload  # replace the payload here
-                    Query.create_payload(query=query, payloaded_query=payloaded_query, url_parsed=url_parsed,
-                                         queries=queries, final_urls=final_urls)
+                    Query.create_payload(
+                        query=query,
+                        payloaded_query=payloaded_query,
+                        url_parsed=url_parsed,
+                        queries=queries,
+                        final_urls=final_urls)
                     # Now we will append the urls
                 except ValueError:
                     pass
         # final_urls is a python list which contains payloaded urls
-        return final_urls    
+        return final_urls
 
     @staticmethod
-    def create_payload(query, payloaded_query, url_parsed, queries, final_urls):
+    def create_payload(query, payloaded_query, url_parsed, queries,
+                       final_urls):
         final_payload = {query: payloaded_query}
         partial_url = url_parsed.scheme + "://" + url_parsed.netloc + url_parsed.path + "?"
         for new_query in queries:
@@ -120,31 +141,30 @@ class Query:
         if final_url not in final_urls:
             final_urls.append(final_url)
 
-
     def encode_payload(self, payload):
         """
         :param payload: The payload which is to be encoded
         :return: return the encoded payload
         """
         # I know this can be looped, but why should I waste ecx?
-        payload = payload.replace(" ","%20")
-        payload = payload.replace("!","%21")
-        payload = payload.replace("#","%23")
-        payload = payload.replace("$","%24")
-        payload = payload.replace("&","%26")
-        payload = payload.replace("'","%27")
-        payload = payload.replace("(","%28")
-        payload = payload.replace(")","%29")
-        payload = payload.replace("*","%2A")
-        payload = payload.replace("+","%2B")
-        payload = payload.replace(",","%2C")
-        payload = payload.replace("/","%2F")
-        payload = payload.replace(":","%3A")
-        payload = payload.replace(";","%3B")
-        payload = payload.replace("=","%3D")
-        payload = payload.replace("?","%3F")
-        payload = payload.replace("@","%40")
-        payload = payload.replace("[","%5B")
-        payload = payload.replace("]","%5D")
+        payload = payload.replace(" ", "%20")
+        payload = payload.replace("!", "%21")
+        payload = payload.replace("#", "%23")
+        payload = payload.replace("$", "%24")
+        payload = payload.replace("&", "%26")
+        payload = payload.replace("'", "%27")
+        payload = payload.replace("(", "%28")
+        payload = payload.replace(")", "%29")
+        payload = payload.replace("*", "%2A")
+        payload = payload.replace("+", "%2B")
+        payload = payload.replace(",", "%2C")
+        payload = payload.replace("/", "%2F")
+        payload = payload.replace(":", "%3A")
+        payload = payload.replace(";", "%3B")
+        payload = payload.replace("=", "%3D")
+        payload = payload.replace("?", "%3F")
+        payload = payload.replace("@", "%40")
+        payload = payload.replace("[", "%5B")
+        payload = payload.replace("]", "%5D")
         # Now we have the encoded payload
         return payload

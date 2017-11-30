@@ -28,13 +28,14 @@ class WebServerInformation(InfoGatheringPhaseOneDatabase):
     __database_semaphore = None
     __url = None
     __ip = None
-    __headers = None # request headers object
+    __headers = None  # request headers object
     __firewall = None
     __webserver_name = None
     __webserver_os = None
     __programming_language_used = None
 
-    def __init__(self, project_id, connection, thread_semaphore, database_semaphore, url):
+    def __init__(self, project_id, connection, thread_semaphore,
+                 database_semaphore, url):
         """
         Paramters:
         ==========
@@ -55,8 +56,11 @@ class WebServerInformation(InfoGatheringPhaseOneDatabase):
             ip = executor.submit(URL().get_ip, self.__url)
             self.__ip = ip.result()
         # we will get the headers of the request
-        if URL().get_head_request(url=self.__url, user_agent=UserAgent.get_user_agent()) is not None:
-            self.__headers = URL().get_head_request(url=self.__url, user_agent=UserAgent.get_user_agent()).headers
+        if URL().get_head_request(
+                url=self.__url,
+                user_agent=UserAgent.get_user_agent()) is not None:
+            self.__headers = URL().get_head_request(
+                url=self.__url, user_agent=UserAgent.get_user_agent()).headers
         else:
             self.__headers = ""
 
@@ -119,7 +123,8 @@ class WebServerInformation(InfoGatheringPhaseOneDatabase):
         # If we didn't get the programming language we will try to get
         # it from the cookies
         if self.__programming_language_used is None:
-            r = URL().get_request(url=self.__url, user_agent=UserAgent.get_user_agent())
+            r = URL().get_request(
+                url=self.__url, user_agent=UserAgent.get_user_agent())
             cookies = r.cookies if r is not None else ""
             session_id = requests.utils.dict_from_cookiejar(cookies)
             # session_id contains the session id of the targetted url
@@ -186,10 +191,12 @@ class WebServerInformation(InfoGatheringPhaseOneDatabase):
             self.__firewall = "None"
         # Now add the information to database
         query = "insert into info_gathering values(%s,%s,%s,%s,%s,%s,%s)"
-        args = (self.__project_id, "PRELIMINARY", self.__ip, self.__webserver_name,
-                              self.__webserver_os, self.__programming_language_used,
-                              self.__firewall)
+        args = (self.__project_id, "PRELIMINARY", self.__ip,
+                self.__webserver_name, self.__webserver_os,
+                self.__programming_language_used, self.__firewall)
         # A thread to add the information to the database
-        database_adding_thread = Thread(target=self.add_info_gathering_phase_one, args=(self.__database_semaphore, self.__connection, query, args))
+        database_adding_thread = Thread(
+            target=self.add_info_gathering_phase_one,
+            args=(self.__database_semaphore, self.__connection, query, args))
         database_adding_thread.start()
         database_adding_thread.join()

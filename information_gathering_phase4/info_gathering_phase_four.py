@@ -7,6 +7,7 @@ from user_agent import UserAgent
 from threading import Thread
 from information_gathering_phase4.database import AdminPageDatabase
 
+
 class InfoGatheringPhaseFour(AdminPageDatabase):
     """
     Aim:
@@ -33,7 +34,8 @@ class InfoGatheringPhaseFour(AdminPageDatabase):
     __admin_pages = []  # This will contain the list of admin pages
     __threads = []
 
-    def __init__(self, project_id, url, thread_semaphore, database_semaphore, connection):
+    def __init__(self, project_id, url, thread_semaphore, database_semaphore,
+                 connection):
         """
         :param project_id: The id of the project
         :param url: The website for which the administrator page is to be found
@@ -58,9 +60,11 @@ class InfoGatheringPhaseFour(AdminPageDatabase):
         # Now display and add the admin pages in database table named "admin_table"
         for admin_page in self.__admin_pages:
             print("[+] ADMIN PAGE: ", admin_page)
-            self.update_admin_page(project_id=project_id, url=admin_page,
-                                   connection=self.__connection, database_semaphore=self.__database_semaphore)
-
+            self.update_admin_page(
+                project_id=project_id,
+                url=admin_page,
+                connection=self.__connection,
+                database_semaphore=self.__database_semaphore)
 
     def add_if_page_found(self, url):
         """
@@ -70,7 +74,8 @@ class InfoGatheringPhaseFour(AdminPageDatabase):
         :param url: The url to be added to the database
         :return: None
         """
-        r = URL().get_head_request(url=url, user_agent=UserAgent.get_user_agent())
+        r = URL().get_head_request(
+            url=url, user_agent=UserAgent.get_user_agent())
         try:
             if r.status_code == 200:
                 if url not in self.__admin_pages:

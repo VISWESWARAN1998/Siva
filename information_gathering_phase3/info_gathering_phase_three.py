@@ -7,6 +7,7 @@ from url.URL import URL
 from user_agent import UserAgent
 from threading import Thread
 
+
 class InfoGatheringPhasethree:
     """
     Description:
@@ -39,7 +40,6 @@ class InfoGatheringPhasethree:
         whois_thread.join()
         robots_thread.join()
 
-
     def __get_whois(self):
         """
         Description:
@@ -51,7 +51,8 @@ class InfoGatheringPhasethree:
         print("[+] GETTING WHO-IS")
         whois = WhoIs(domain=self.__domain).get_whois()
         if whois is not None:
-            file_location = "projects/project-"+str(self.__project_id)+"/whois.json"
+            file_location = "projects/project-" + str(
+                self.__project_id) + "/whois.json"
             File.write(file_location=file_location, content=whois)
         self.__thread_semaphore.release()
 
@@ -65,13 +66,15 @@ class InfoGatheringPhasethree:
         self.__thread_semaphore.acquire()
         robots_url = URL.join_urls(self.__url, "/robots.txt")
         print("[+] GETTING ROBOTS.TXT AT ", robots_url)
-        r = URL().get_head_request(url=self.__url, user_agent=UserAgent.get_user_agent())
+        r = URL().get_head_request(
+            url=self.__url, user_agent=UserAgent.get_user_agent())
         if r is not None:
             if r.status_code == 200:
-                robots_file_location = "projects/project-"+str(self.__project_id)+"/robots.txt"
-                File.download_file(local_file_location=robots_file_location, remote_file_location=robots_url)
+                robots_file_location = "projects/project-" + str(
+                    self.__project_id) + "/robots.txt"
+                File.download_file(
+                    local_file_location=robots_file_location,
+                    remote_file_location=robots_url)
             else:
                 print("[-] NO robots.txt FOUND IN THE SERVER")
         self.__thread_semaphore.release()
-
-

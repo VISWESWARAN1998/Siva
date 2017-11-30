@@ -2,6 +2,7 @@
 
 import pythonwhois
 
+
 class WhoIs:
     """
     This calss is used to get the whois information of the I.P address
@@ -17,6 +18,3 @@ class WhoIs:
             return whois
         except Exception:
             return None
-
-
-

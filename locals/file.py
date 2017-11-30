@@ -3,6 +3,7 @@
 import codecs
 import urllib.request
 
+
 class File:
     """
     This class is used to handle everything with files in your local PC
@@ -11,7 +12,8 @@ class File:
     @staticmethod
     def write(file_location, content):
         try:
-            file = codecs.open(filename=file_location, encoding="utf-8", mode="w")
+            file = codecs.open(
+                filename=file_location, encoding="utf-8", mode="w")
             file.write(str(content))
             file.close()
         except FileNotFoundError:
@@ -30,7 +32,8 @@ class File:
         :return:
         """
         try:
-            file = codecs.open(filename=file_location, encoding="utf-8", mode="w")
+            file = codecs.open(
+                filename=file_location, encoding="utf-8", mode="w")
             for content in contents:
                 try:
                     file.write(str(content))
@@ -60,7 +63,8 @@ class File:
                 file_contents.append(i)
             return file_contents
         except FileNotFoundError:
-            print("[-] CANNOT OPEN THE FILE LOCATION. PLEASE CHECK THE LOCATION")
+            print(
+                "[-] CANNOT OPEN THE FILE LOCATION. PLEASE CHECK THE LOCATION")
             return None
         except Exception:
             return None
@@ -74,7 +78,8 @@ class File:
         :return:
         """
         try:
-            urllib.request.urlretrieve(url=remote_file_location, filename=local_file_location)
+            urllib.request.urlretrieve(
+                url=remote_file_location, filename=local_file_location)
         except Exception as e:
             print("[-] CANNOT DOWNLOAD THE FILE")
             print(e)

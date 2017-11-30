@@ -30,7 +30,8 @@ class PhaseOneAnalysis:
     __programming_language_used = None
     __firewall_name = None
 
-    def __init__(self, project_id, url, thread_semaphore, database_semaphore, connection):
+    def __init__(self, project_id, url, thread_semaphore, database_semaphore,
+                 connection):
         """
         :param project_id: The id of the project
         :param thread_semaphore: The semaphore of the project
@@ -49,7 +50,8 @@ class PhaseOneAnalysis:
         # Now we will load the information gathered from the phase-1 of IG
         self.__load_phase_one_info()
         if self.__programming_language_used == "None":
-            get_prog_lang_thread = Thread(target=self.__check_programming_language, args=(url,))
+            get_prog_lang_thread = Thread(
+                target=self.__check_programming_language, args=(url, ))
             get_prog_lang_thread.start()
             get_prog_lang_thread.join()
         # If we cannot get the webserver name we will try this method
@@ -69,7 +71,6 @@ class PhaseOneAnalysis:
         print("Firewall: ", self.__firewall_name)
         print("Language: ", self.__programming_language_used)
 
-
     def __load_phase_one_info(self):
         """
         Description:
@@ -78,12 +79,14 @@ class PhaseOneAnalysis:
         to the respective attributes
         :return:
         """
-        result = InfoGatheringPhaseOneDatabase.get_info_gathering_phase_one(project_id=self.__project_id, connection=self.__connection)
+        result = InfoGatheringPhaseOneDatabase.get_info_gathering_phase_one(
+            project_id=self.__project_id, connection=self.__connection)
         if result is not None:
-            result = result[0] # result will deliver tuple of tuples so we need only the first one since we used limit 1
+            result = result[
+                0]  # result will deliver tuple of tuples so we need only the first one since we used limit 1
             # e.g (project_id, status, ip, webserver_name, server_os, programming_language, firewall)
             self.__ip = result[2]
-            self.__webserver_name =  result[3]
+            self.__webserver_name = result[3]
             self.__server_os = result[4]
             self.__programming_language_used = result[5]
             self.__firewall_name = result[6]
@@ -105,12 +108,12 @@ class PhaseOneAnalysis:
         print("[+] ANALYSING PROGRAMMING LANGUAGE")
         # These are the popular programming languages used for designing websites
         language_names = {
-            ".php" : "PHP",
-            ".jsp" : "JSP",
-            ".asp" : "ASP",
+            ".php": "PHP",
+            ".jsp": "JSP",
+            ".asp": "ASP",
             ".aspx": "ASPX",
-            ".py"  : "PYTHON",
-            ".pl"  : "PERL"
+            ".py": "PYTHON",
+            ".pl": "PERL"
         }
         user_agent = UserAgent.get_user_agent()
         r = URL().get_request(url=url, user_agent=user_agent)
@@ -122,18 +125,18 @@ class PhaseOneAnalysis:
                     if "http" not in partial_url:
                         new_url = URL.join_urls(url, partial_url)
                     else:
-                        new_url = partial_url if URL.is_same_domain(url, new_url) else ""
+                        new_url = partial_url if URL.is_same_domain(
+                            url, new_url) else ""
                     file_name = URL.get_file_name(new_url)
                     for i in language_names:
                         if i in file_name:
-                            self.__programming_language_used = language_names[i]
+                            self.__programming_language_used = language_names[
+                                i]
                             # Now we will update the programming language used into the database
                             InfoGatheringPhaseOneDatabase.update_programming_language(
-                                                    self.__database_semaphore,
-                                                    self.__connection,
-                                                    self.__project_id,
-                                                    self.__programming_language_used
-                                                    )
+                                self.__database_semaphore, self.__connection,
+                                self.__project_id,
+                                self.__programming_language_used)
                             break
                         if i in file_name:
                             break
@@ -147,7 +150,8 @@ class PhaseOneAnalysis:
             tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             tcp_socket.connect((self.__ip, 80))  # connect to http port no 80
             tcp_socket.send("GET / HTTP/1.1\r\n\r\n".encode("utf-8"))
-            result = tcp_socket.recv(4096)  # receive first 4096 bytes of information
+            result = tcp_socket.recv(
+                4096)  # receive first 4096 bytes of information
             result = result.decode("utf-8")
             result = result.split("\r\n")
             for i in result:

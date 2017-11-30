@@ -3,6 +3,7 @@
 import codecs
 from locals.file import File
 
+
 class PhaseThreeAnalysis:
     """
     Description:
@@ -19,7 +20,8 @@ class PhaseThreeAnalysis:
     __programming_language = None
     __exploits = []
 
-    def __init__(self, project_id, thread_semaphore, database_semaphore, webserver_name, programming_language):
+    def __init__(self, project_id, thread_semaphore, database_semaphore,
+                 webserver_name, programming_language):
         """
         :param project_id: The id for the project
         :param thread_semaphore: The semaphore for the no of threads used for the project
@@ -37,9 +39,9 @@ class PhaseThreeAnalysis:
         self.__get_info_from_exploit_db()
         # and store the local copy of the exploits
         print("[+] SAVING A LOCAL COPY OF EXPLOITS PRESENT IN THE WEBSITE")
-        exploit_copy_loc = "projects/project-"+str(project_id)+"/exploits.txt"
+        exploit_copy_loc = "projects/project-" + str(
+            project_id) + "/exploits.txt"
         File.write_to_list(exploit_copy_loc, self.__exploits)
-
 
     def __get_info_from_exploit_db(self):
         """

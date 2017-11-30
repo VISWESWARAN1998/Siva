@@ -8,10 +8,12 @@ from url.URL import URL
 import pymysql
 import getpass
 
+
 class SivaDB:
     """
     This class will be the one and the only class which is used to perform database related operations
     """
+
     # This method will be called as a command line argument e.g ./siva.py install
     def install(self):
         """
@@ -20,7 +22,8 @@ class SivaDB:
         """
         user_name = input("USER NAME: ")
         password = getpass.getpass()
-        connection = pymysql.connect(host="localhost", user=user_name, password=password)
+        connection = pymysql.connect(
+            host="localhost", user=user_name, password=password)
         cursor = connection.cursor()
         print("[+] CREATING A DATABASE")
         cursor.execute("create database if not exists siva")
@@ -35,14 +38,21 @@ class SivaDB:
         print("[+] CREATING ADMIN PAGE")
         self.execute_query(connection, admin_page_table)
         print("[+] CREATING INFO GATHERING TABLE")
-        self.execute_query(connection, "create table if not exists info_gathering(project_id int(10) primary key, status varchar(100), ip varchar(100), webserver_name varchar(100), server_os varchar(100), programming_language varchar(150), firewall_name varchar(100));")
+        self.execute_query(
+            connection,
+            "create table if not exists info_gathering(project_id int(10) primary key, status varchar(100), ip varchar(100), webserver_name varchar(100), server_os varchar(100), programming_language varchar(150), firewall_name varchar(100));"
+        )
         print("[+] CREATING PROJECTS TABLE")
-        self.execute_query(connection, "create table if not exists project(project_id int(10) primary key, domain varchar(1000))")
+        self.execute_query(
+            connection,
+            "create table if not exists project(project_id int(10) primary key, domain varchar(1000))"
+        )
         print("[+] CREATING RESULT TABLE")
-        self.execute_query(connection, "create table if not exists result(project_id int(10), phase_name varchar(30))")
+        self.execute_query(
+            connection,
+            "create table if not exists result(project_id int(10), phase_name varchar(30))"
+        )
         print("[+] SIVA HAS BEEN INSTALLED")
-
-
 
     def execute_query(self, connection, query):
         """
@@ -73,7 +83,8 @@ class SivaDB:
         """
         try:
             cursor = connection.cursor()
-            cursor.execute("insert into project values(%s, %s)", (project_id, URL().get_host_name(url)))
+            cursor.execute("insert into project values(%s, %s)",
+                           (project_id, URL().get_host_name(url)))
             connection.commit()
             return True
         except Exception as e:
@@ -93,7 +104,8 @@ class SivaDB:
         """
         try:
             cursor = connection.cursor()
-            cursor.execute("insert into result values(%s, %s)", (project_id, phase_id))
+            cursor.execute("insert into result values(%s, %s)",
+                           (project_id, phase_id))
             connection.commit()
             print("[+] RESULT UPDATED")
             return True
@@ -102,7 +114,8 @@ class SivaDB:
             return False
 
     @staticmethod
-    def update_raw_info(connection, project_id, info_source, information, database_semaphore):
+    def update_raw_info(connection, project_id, info_source, information,
+                        database_semaphore):
         """
         Description:
         ============
@@ -115,7 +128,8 @@ class SivaDB:
         database_semaphore.acquire()
         try:
             cursor = connection.cursor()
-            cursor.execute("insert into raw_information values(%s, %s, %s)", (project_id, info_source, information))
+            cursor.execute("insert into raw_information values(%s, %s, %s)",
+                           (project_id, info_source, information))
             connection.commit()
             print("[+] RAW INFORMATION UPDATED")
             return True
@@ -123,4 +137,3 @@ class SivaDB:
             print(e)
             return False
         database_semaphore.release()
-

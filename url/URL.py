@@ -5,6 +5,7 @@ import requests
 from urllib.parse import urlparse
 from urllib.parse import urljoin
 
+
 class URL:
     """
     Description:
@@ -115,14 +116,14 @@ class URL:
             r = session.get(url=url, headers=user_agent)
             return r
         except requests.ConnectionError:
-            self.session_get_request(session=session, url=url, user_agent=user_agent)
+            self.session_get_request(
+                session=session, url=url, user_agent=user_agent)
         except requests.exceptions.MissingSchema:
             return None
         except requests.exceptions.InvalidURL:
             return None
         except Exception:
             return None
-
 
     @staticmethod
     def get_file_name(url):
@@ -233,4 +234,3 @@ class URL:
         :return: None
         """
         return urlparse(url).scheme
-

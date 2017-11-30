@@ -2,6 +2,7 @@
 
 import os
 
+
 class Directory:
     """
     Description:
@@ -27,6 +28,8 @@ class Directory:
             except FileNotFoundError:
                 return False
             except PermissionError:
-                print("[-] WARNING UNABLE TO CREATE THE DIRECTORY DUE TO MISSING PERMISSION")
+                print(
+                    "[-] WARNING UNABLE TO CREATE THE DIRECTORY DUE TO MISSING PERMISSION"
+                )
                 return False
         return False

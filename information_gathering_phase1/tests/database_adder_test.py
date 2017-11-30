@@ -7,8 +7,8 @@ import threading
 
 class DatabaseTest(unittest.TestCase):
     password = input("Enter the password: ")
-    connection = pymysql.connect(host="localhost", user="root", password=password,
-                                 db="siva")
+    connection = pymysql.connect(
+        host="localhost", user="root", password=password, db="siva")
     semaphore = threading.Semaphore(10)
 
     def test_firewall(self):
@@ -17,7 +17,4 @@ class DatabaseTest(unittest.TestCase):
                 database_semaphore=self.semaphore,
                 connection=self.connection,
                 project_id=800,
-                firewall_name="Hower\""
-            ),
-            None
-        )
+                firewall_name="Hower\""), None)

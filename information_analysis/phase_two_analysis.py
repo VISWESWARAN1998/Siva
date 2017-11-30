@@ -5,6 +5,7 @@ from threading import Thread
 from siva_db import SivaDB
 from url.URL import URL
 
+
 class PhaseTwoAnalysis:
     """
     Description:
@@ -29,22 +30,25 @@ class PhaseTwoAnalysis:
     __robots_path = None  # This will be the path to the robots.txt file
     __robots_preprocessed_file = None
 
-    def __init__(self, project_id, url, thread_semaphore, database_semaphore, connection):
+    def __init__(self, project_id, url, thread_semaphore, database_semaphore,
+                 connection):
         self.__project_id = project_id
         self.__url = url
         self.__thread_semaphore = thread_semaphore
         self.__database_semaphore = database_semaphore
         self.__connection = connection
-        self.__robots_path = "projects/project-"+str(project_id)+"/robots.txt"
+        self.__robots_path = "projects/project-" + str(
+            project_id) + "/robots.txt"
         if os.path.exists(self.__robots_path):
-            self.__robots_preprocessed_file = open("projects/project-"+str(project_id)+"/robots-preprocessed.txt", "w")
+            self.__robots_preprocessed_file = open(
+                "projects/project-" + str(project_id) +
+                "/robots-preprocessed.txt", "w")
             preprocess_thread = Thread(target=self.__preprocess())
             preprocess_thread.start()
             preprocess_thread.join()
             self.__robots_preprocessed_file.close()
         else:
             print("[-] ROBOTS.TXT - NOT FOUND")
-
 
     def __preprocess(self):
         print("[+] PRE-PROCESSING ROBOTS.TXT")
@@ -57,25 +61,29 @@ class PhaseTwoAnalysis:
             try:
                 # If it is a comment
                 if content[0] == "#":
-                    SivaDB.update_raw_info(connection=self.__connection, project_id=self.__project_id,
-                                           info_source="robots.txt", information=content,
-                                           database_semaphore=self.__database_semaphore)
+                    SivaDB.update_raw_info(
+                        connection=self.__connection,
+                        project_id=self.__project_id,
+                        info_source="robots.txt",
+                        information=content,
+                        database_semaphore=self.__database_semaphore)
                 else:
                     if "U" in content[0]:
-                        self.__robots_preprocessed_file.write(content+"\n")
+                        self.__robots_preprocessed_file.write(content + "\n")
                     else:
                         full_content = ""  # Minor fix @v0.2
                         if "D" in content[0]:
                             content = content.replace("Disallow:", "")
                             content = content.strip()
                             full_url = URL.join_urls(self.__url, content)
-                            full_content = "Disallow: "+ full_url
+                            full_content = "Disallow: " + full_url
                         elif "U" in content[0]:
                             content = content.replace("Allow:", "")
                             content = content.strip()
                             full_url = URL.join_urls(self.__url, content)
-                            full_content = "Allow: "+full_url
-                        self.__robots_preprocessed_file.write(full_content + "\n")
+                            full_content = "Allow: " + full_url
+                        self.__robots_preprocessed_file.write(
+                            full_content + "\n")
             except IndexError:
                 self.__robots_preprocessed_file.write("\n")
         self.__thread_semaphore.release()

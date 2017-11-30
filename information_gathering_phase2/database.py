@@ -1,5 +1,6 @@
 # SWAMI KARUPPASWAMI THUNNAI
 
+
 class PortScanDatabase:
     """
     This class is used to add/remove ports to the port table
@@ -21,10 +22,10 @@ class PortScanDatabase:
         try:
             cursor = connection.cursor()
             query = "insert into port values(%s,%s)"
-            cursor.execute(query,(project_id, port_no))
+            cursor.execute(query, (project_id, port_no))
             connection.commit()
         except Exception as e:
-            print("[-] CANNOT ADD TO DATBASE ",e)
+            print("[-] CANNOT ADD TO DATBASE ", e)
 
     def remove_port_from_database(self, project_id, connection, port_no):
         """
