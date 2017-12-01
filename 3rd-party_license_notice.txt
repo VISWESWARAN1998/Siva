@@ -1,4 +1,5 @@
 PyMySQL        : https://github.com/PyMySQL/PyMySQL is licensed under MIT
 requests       : https://github.com/requests/requests is licensed under Apache 2.0
 BeautifulSoup4 : https://pypi.python.org/pypi/beautifulsoup4 is licensed under MIT
-pythonwhois    : https://github.com/joepie91/python-whois is licensed under WTFPL
+pythonwhois    : https://github.com/joepie91/python-whois is licensed under WTFPL
+tqdm.          : https://pypi.python.org/pypi/tqdm
