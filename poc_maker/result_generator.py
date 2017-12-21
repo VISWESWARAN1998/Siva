@@ -45,10 +45,11 @@ class ResultGenerator:
             sys.exit(-1)
 
 
-
+"""
 if __name__ == "__main__":
     username = "visweswaran"
-    password = "visweswaran"
+    password = "12345"
     connection = pymysql.connect(
         host="localhost", user=username, password=password, db="siva")
     gen = ResultGenerator(connection).generate_result(-1)
+"""
