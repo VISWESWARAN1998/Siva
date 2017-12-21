@@ -14,6 +14,7 @@
 
 from siva_db import SivaDB
 from crypto.oneway import Hash
+from data_stores.sql.database import SQLInjectionDatabase
 
 
 class SQLErrorIdentifier:
@@ -95,8 +96,10 @@ class SQLErrorIdentifier:
                         self.__is_exception_present = True
                         self.__description = "MSSQL SQL VULNERABILITY"
             except Exception as e:
-                print(e)
+                print(
+                    "[+] EXCEPTION HAS OCCURED WHICH HAS BEEN SAFETLY HANDLED")
         if self.__is_exception_present:
+            # ================ ADD THE INFO TO THE DATABASE ===============
             SivaDB.update_analysis(
                 connection=self.__connection,
                 database_semaphore=self.__database_semaphore,
@@ -105,14 +108,31 @@ class SQLErrorIdentifier:
                 source=self.__original_url,
                 payload=self.__payloaded_url,
                 description=self.__description)
+            # ================= CREATE PROOF OF CONCEPT ===================
             self.__poc_object.set_file_name(
                 Hash.get_sha2(self.__payloaded_url)
             )  # save the file name as the sha2 of the payloaded url for the local copy
             self.__poc_object.set_project_id(self.__project_id)
             self.__poc_object.set_url(self.__payloaded_url)
             self.__poc_object.simple_snapshot()
+            # ================= SET THE NAME OF THE DATABASE ==============
+            if "MYSQL" in self.__description:
+                SQLInjectionDatabase.data_base_name = "MYSQL"
+            elif "MARIADB" in self.__description:
+                SQLInjectionDatabase.data_base_name = "MARIADB"
+            elif "MSSQL" in self.__description:
+                SQLInjectionDatabase.data_base_name = "MSSQL"
 
     def __is_mysql_error(self, error_message):
+        """
+        Description:
+        -------------
+        This method will check if the errror is mysql error
+        Parameters:
+        -----------
+        :param error_message: The error message to be checked
+        :return: Will return true if the error message is a valid mysql error message
+        """
         error_message = str(error_message)
         for mysql_error in self.__mysql_errors:
             if mysql_error in error_message:
@@ -120,6 +140,15 @@ class SQLErrorIdentifier:
         return False
 
     def __is_mariadb_error(self, error_message):
+        """
+        Description:
+        -------------
+        This method will check if the errror is mariadb error
+        Parameters:
+        -----------
+        :param error_message: The error message to be checked
+        :return: Will return true if the error message is a valid mysql error message
+        """
         error_message = str(error_message)
         for mariadb_error in self.__mariadb_errors:
             if mariadb_error in error_message:
@@ -127,6 +156,15 @@ class SQLErrorIdentifier:
         return False
 
     def __is_mssql_error(self, error_message):
+        """
+        Description:
+        -------------
+        This method will check if the errror is mssql error
+        Parameters:
+        -----------
+        :param error_message: The error message to be checked
+        :return: Will return true if the error message is a valid mysql error message
+        """
         error_message = str(error_message)
         for mssql_error in self.__mssql_errors:
             if mssql_error in error_message:

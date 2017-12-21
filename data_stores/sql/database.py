@@ -6,9 +6,9 @@
 # Date: 02.12.201
 # Author: Visweswaran Nagasivam
 # email: visweswaran.nagasivam98@gmail.com
-# This class will update the list of SQL errors present in the database
+# This class will contain the name of the database
 #==============================================
 
 
 class SQLInjectionDatabase:
-    pass
+    data_base_name = None

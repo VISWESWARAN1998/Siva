@@ -7,9 +7,7 @@
 # ==============================================
 
 import sys
-import pymysql
 from siva_database.database import Database
-
 
 class ResultGenerator:
     """
@@ -40,18 +38,7 @@ class ResultGenerator:
         :param project_id: The project id for which the result is to be generated.
         :return: None
         """
-        project_details = Database(
-            self.__connection).get_project_details(project_id=project_id)
+        project_details = Database(self.__connection).get_project_details(project_id=project_id)
         if project_details is None:
             print("[+] INVALID PROJECT")
             sys.exit(-1)
-
-
-"""
-if __name__ == "__main__":
-    username = "visweswaran"
-    password = "12345"
-    connection = pymysql.connect(
-        host="localhost", user=username, password=password, db="siva")
-    gen = ResultGenerator(connection).generate_result(-1)
-"""
