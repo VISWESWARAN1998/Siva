@@ -27,7 +27,8 @@ class BobLearn:
 
     def __init__(self):
         print("[+] CALCULATING THE SPEED OF THE FASTEST WEBSITE")
-        self.__speed_of_fastest_website = self.get_speed_of_website(url=self.__fastest_website)
+        self.__speed_of_fastest_website = self.get_speed_of_website(
+            url=self.__fastest_website)
         print("SPEED: ", self.__speed_of_fastest_website)
         if self.__speed_of_fastest_website is None:
             print("ERROR IN CALCULATING THE VALUES, EXITTING...")
@@ -35,12 +36,12 @@ class BobLearn:
 
     def set_target_website_speed(self, target_url):
         print("[+] CALCULATING THE SPEED OF THE TARGET WEBSITE ", target_url)
-        self.__speed_of_target_website = self.get_speed_of_website(url=target_url)
+        self.__speed_of_target_website = self.get_speed_of_website(
+            url=target_url)
         print("SPEED: ", self.__speed_of_target_website)
         if self.__speed_of_target_website is None:
             print("ERROR IN CALCULATING THE VALUES, EXITTING...")
             sys.exit(-1)
-
 
     def get_speed_of_website(self, url):
         start_time = time.time()
@@ -59,5 +60,6 @@ class BobLearn:
         details = "{},{},{}\n".format(self.__speed_of_fastest_website,
                                       self.__speed_of_target_website,
                                       self.__is_website_slower)
-        File.write(file_location="data_frames/bob.csv", content=details, mode="a")
+        File.write(
+            file_location="data_frames/bob.csv", content=details, mode="a")
         print("[+] RESULT UPDATED! THANK YOU FOR TEACHING")

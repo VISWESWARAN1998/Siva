@@ -14,7 +14,6 @@ It will help your bot to think efficently thereby
 making your bot a website friendly crawling/scraping!
 """
 
-
 import time
 import pandas as pd
 import numpy as np
@@ -22,6 +21,7 @@ from sklearn.linear_model import LogisticRegression
 from url.URL import URL
 from user_agent import UserAgent
 from locals.static import Static
+
 
 class BOB:
     __thread_semaphore = None
@@ -49,7 +49,8 @@ class BOB:
         :return:
         """
         start_time = time.time()
-        r = URL().get_request(url=self.__fastest_website, user_agent=UserAgent.get_user_agent())
+        r = URL().get_request(
+            url=self.__fastest_website, user_agent=UserAgent.get_user_agent())
         end_time = time.time()
         if r is not None:
             self.__response_time_of_fastest_website = end_time - start_time
@@ -57,23 +58,20 @@ class BOB:
     def __set_logistic_regressor_object(self):
         data_frame = pd.read_csv(filepath_or_buffer=Static.bob_file)
         # Independent Variable
-        X = data_frame.iloc[:, :-1].values # All rows except the 3rd column
+        X = data_frame.iloc[:, :-1].values  # All rows except the 3rd column
         # Create a dependent Variable
         y = data_frame.iloc[:, 2].values  # All rows and 3rd column only
         self.__regressor = LogisticRegression()
         self.__regressor.fit(X, y)
 
     def predict(self, response_time):
-        print("Fastest Response Time: ", self.__response_time_of_fastest_website)
+        print("Fastest Response Time: ",
+              self.__response_time_of_fastest_website)
         print("Target Response Time: ", response_time)
-        prediction = np.array([[self.__response_time_of_fastest_website, response_time]])
+        prediction = np.array(
+            [[self.__response_time_of_fastest_website, response_time]])
         predict = self.__regressor.predict(prediction)
         if predict[0] == 1:
             print("WEBSITE IS SLOWING DOWN. DELAYING A SECOND")
             for i in range(100):
                 self.__thread_semaphore.acquire(timeout=0.1)
-
-
-
-
-

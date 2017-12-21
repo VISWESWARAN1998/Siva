@@ -11,6 +11,7 @@
 
 from siva_db import SivaDB
 
+
 class HiddenFieldFinder:
     __project_id = None
     __thread_semaphore = None
@@ -19,7 +20,8 @@ class HiddenFieldFinder:
     __url = None
     __soup_object = None
 
-    def __init__(self, project_id, thread_semaphore, database_semaphore, connection, url, soup_object):
+    def __init__(self, project_id, thread_semaphore, database_semaphore,
+                 connection, url, soup_object):
         self.__project_id = project_id
         self.__thread_semaphore = thread_semaphore
         self.__database_semaphore = database_semaphore
@@ -33,9 +35,14 @@ class HiddenFieldFinder:
             try:
                 if i["type"] == "hidden":
                     print("[+] HIDDEN VALUE IS SILENTLY TRANSMITTED")
-                    SivaDB.update_analysis(connection=self.__connection, database_semaphore=self.__database_semaphore,
-                                           method="GET", source=self.__url, project_id=self.__project_id,
-                                           payload=str(i), description="HIDDEN VALUE TRANSMITTED")
+                    SivaDB.update_analysis(
+                        connection=self.__connection,
+                        database_semaphore=self.__database_semaphore,
+                        method="GET",
+                        source=self.__url,
+                        project_id=self.__project_id,
+                        payload=str(i),
+                        description="HIDDEN VALUE TRANSMITTED")
             except KeyError:
                 print()
         self.__thread_semaphore.release()

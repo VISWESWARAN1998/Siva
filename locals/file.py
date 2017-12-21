@@ -38,8 +38,7 @@ class File:
         :return:
         """
         try:
-            file = codecs.open(
-                filename=file_location, encoding="utf-8")
+            file = codecs.open(filename=file_location, encoding="utf-8")
             for content in contents:
                 try:
                     file.write(str(content))

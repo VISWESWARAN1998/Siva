@@ -39,8 +39,7 @@ class SQLErrorIdentifier:
         "Access denied for user",
         "Can't connect to local MySQL server through socket",
         "expects parameter 1 to be resource",
-        "You have an error in your SQL syntax",
-        "mysql_num_rows()",
+        "You have an error in your SQL syntax", "mysql_num_rows()",
         "supplied argument is not a valid MySQL result"
     ]
 
@@ -48,17 +47,12 @@ class SQLErrorIdentifier:
         "You have an error in your SQL syntax", "MariaDB server version"
     ]
 
-    __mssql_errors =[
-        "Server Error in '/' Application",
-        "CloseConnection()",
+    __mssql_errors = [
+        "Server Error in '/' Application", "CloseConnection()",
         "Unclosed quotation mark after the character string",
-        "System.Data.SqlClient.SqlConnection.OnError",
-        "SqlException",
-        "System.Data.SqlClient",
-        "System.Data.Common.DbCommand",
-        "System.Data.Common.DbDataAdapter",
-        "SqlDataReader",
-        "SqlCommand"
+        "System.Data.SqlClient.SqlConnection.OnError", "SqlException",
+        "System.Data.SqlClient", "System.Data.Common.DbCommand",
+        "System.Data.Common.DbDataAdapter", "SqlDataReader", "SqlCommand"
     ]
 
     def __init__(self, project_id, thread_semaphore, database_semaphore,
@@ -138,4 +132,3 @@ class SQLErrorIdentifier:
             if mssql_error in error_message:
                 return True
         return False
-

@@ -34,4 +34,3 @@ class URLBruteforcer:
             print(self.__browser.current_url)
             print(self.__browser.get_log("har"))
         self.__browser.quit()
-

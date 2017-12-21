@@ -89,14 +89,19 @@ class GetBasedSQLInjection:
         self.__thread_semaphore.acquire()
         payloaded_urls = Query.add_one(self.__url)
         for payloaded_url in payloaded_urls:
-            r = URL().get_request(url=payloaded_url, user_agent=UserAgent.get_user_agent())
+            r = URL().get_request(
+                url=payloaded_url, user_agent=UserAgent.get_user_agent())
             if r is not None:
                 new_soup_object = BeautifulSoup(r.content, "html.parser")
                 if self.__soup_object == new_soup_object:
                     print("[+] NUMERICAL VULNERABILITY FOUND IN THE DATABASE")
                     print("[+] PAYLOAD: ", payloaded_url)
-                    SivaDB.update_analysis(connection=self.__connection, database_semaphore=self.__database_semaphore, project_id=self.__project_id,
-                                           method="GET", source=self.__url, payload=payloaded_url, description="NUMERICAL VULNERABILITY")
+                    SivaDB.update_analysis(
+                        connection=self.__connection,
+                        database_semaphore=self.__database_semaphore,
+                        project_id=self.__project_id,
+                        method="GET",
+                        source=self.__url,
+                        payload=payloaded_url,
+                        description="NUMERICAL VULNERABILITY")
         self.__thread_semaphore.release()
-
-

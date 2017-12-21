@@ -151,7 +151,9 @@ def main():
     Directory.create_directory(
         "projects/project-" +
         str(project_id))  # and create a working directory for the project
-    Directory.create_directory("projects/project-" + str(project_id)+"/images") # images directory for proof of concept.
+    Directory.create_directory(
+        "projects/project-" + str(project_id) +
+        "/images")  # images directory for proof of concept.
     if SivaDB().create_project(
             connection=connection, project_id=project_id, url=project_url):
         check_for_vulnerabilities(connection, project_id, url)
@@ -180,4 +182,3 @@ if __name__ == "__main__":
                     print("[+] EXITTING...")
         if command == "bruteforce":
             URLBruteforcer().brutforce()
-
