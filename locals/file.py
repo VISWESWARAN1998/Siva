@@ -10,10 +10,16 @@ class File:
     """
 
     @staticmethod
-    def write(file_location, content):
+    def write(file_location, content, mode="w"):
+        """
+        :param file_location: The location of the file
+        :param content: The content to be written to the file
+        :param mode: The mode of the file
+        :return: None
+        """
         try:
             file = codecs.open(
-                filename=file_location, encoding="utf-8", mode="w")
+                filename=file_location, encoding="utf-8", mode=mode)
             file.write(str(content))
             file.close()
         except FileNotFoundError:
@@ -33,7 +39,7 @@ class File:
         """
         try:
             file = codecs.open(
-                filename=file_location, encoding="utf-8", mode="w")
+                filename=file_location, encoding="utf-8")
             for content in contents:
                 try:
                     file.write(str(content))

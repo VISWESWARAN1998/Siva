@@ -15,12 +15,22 @@ from locals.directory import Directory
 from information_gathering_phase3.info_gathering_phase_three import InfoGatheringPhasethree
 from information_gathering_phase4.info_gathering_phase_four import InfoGatheringPhaseFour
 from information_analysis.phase_three_analysis import PhaseThreeAnalysis
+from simple_scan_engine.simple_crawler import SimpleCrawler
+from poc_maker.poc_maker import POCMaker
+from learn.bob_learn import BobLearn
+from miscellaneous.url_bruteforcer import URLBruteforcer
 
 
 def check_for_vulnerabilities(connection, project_id, url):
     """First phase of Information gathering"""
     thread_semaphore = threading.Semaphore(100)
     database_semaphore = threading.Semaphore(100)
+
+    # ======================== PROOF OF CONCEPT FOR EXISTENCE OF VULNERABILITY ========
+    poc = POCMaker()
+    poc_thread = threading.Thread(target=poc.create_object)
+    poc_thread.daemon = True
+    poc_thread.start()
 
     # =========================== INFORMATION GATHERING PHASE - 1 =====================
     print("[*] Gathering PHASE-1 INFORMATION")
@@ -109,9 +119,19 @@ def check_for_vulnerabilities(connection, project_id, url):
     SivaDB.update_result(
         connection=connection, project_id=project_id, phase_id="IG-PHASE-4")
 
+    # ========================== PERFORM A SIMPLE SCAN =======================================
+    print("[*] SIMPLE SCANNER STARTED")
+    SimpleCrawler(
+        project_id=project_id,
+        base_url=url,
+        thread_semaphore=thread_semaphore,
+        database_semaphore=database_semaphore,
+        connection=connection,
+        poc_oject=poc)
+
 
 def main():
-    print("Siva Vulnerability Scanner v1.0")
+    print("Siva Vulnerability Scanner v0.4")
     user_name = input("USER NAME: ")
     password = getpass.getpass()
     try:
@@ -131,6 +151,7 @@ def main():
     Directory.create_directory(
         "projects/project-" +
         str(project_id))  # and create a working directory for the project
+    Directory.create_directory("projects/project-" + str(project_id)+"/images") # images directory for proof of concept.
     if SivaDB().create_project(
             connection=connection, project_id=project_id, url=project_url):
         check_for_vulnerabilities(connection, project_id, url)
@@ -146,3 +167,17 @@ if __name__ == "__main__":
         command = commands[1]
         if command == "install":
             SivaDB().install()
+        if command == "bob":
+            print("[+] TEACH BOB TO THINK ON HIS OWN")
+            print("[+] IF YOUR TEACHING IS BAD, BOB WILL BEHAVE BAD!")
+            learn = BobLearn()
+            while True:
+                try:
+                    website = input("TARGET WEBSITE: ")
+                    learn.set_target_website_speed(target_url=website)
+                    learn.update()
+                except KeyboardInterrupt:
+                    print("[+] EXITTING...")
+        if command == "bruteforce":
+            URLBruteforcer().brutforce()
+

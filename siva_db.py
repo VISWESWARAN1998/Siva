@@ -31,6 +31,7 @@ class SivaDB:
         ports_table = "create table if not exists port(project_id int(10), port_no int(6))"
         raw_info_table = "create table if not exists raw_information(project_id int(10), info_source varchar(1000), information longtext)"
         admin_page_table = "create table if not exists admin_page(project_id int(10), url varchar(1000))"
+        analysis_table = "create table if not exists analysis(project_id int(10), method varchar(10), source varchar(1000), payload varchar(1000), description varchar(1000))"
         print("[+] CREATING PORTS TABLE")
         self.execute_query(connection, ports_table)
         print("[+] CREATING RAW INFO TABLE")
@@ -52,6 +53,8 @@ class SivaDB:
             connection,
             "create table if not exists result(project_id int(10), phase_name varchar(30))"
         )
+        print("[+] CREATING ANALYSIS TABLE")
+        self.execute_query(connection, analysis_table)
         print("[+] SIVA HAS BEEN INSTALLED")
 
     def execute_query(self, connection, query):
@@ -130,6 +133,22 @@ class SivaDB:
             cursor = connection.cursor()
             cursor.execute("insert into raw_information values(%s, %s, %s)",
                            (project_id, info_source, information))
+            connection.commit()
+            print("[+] RAW INFORMATION UPDATED")
+            return True
+        except Exception as e:
+            print(e)
+            return False
+        database_semaphore.release()
+
+    @staticmethod
+    def update_analysis(connection, database_semaphore, project_id, method,
+                        source, payload, description):
+        database_semaphore.acquire()
+        try:
+            cursor = connection.cursor()
+            cursor.execute("insert into analysis values(%s, %s, %s, %s, %s)",
+                           (project_id, method, source, payload, description))
             connection.commit()
             print("[+] RAW INFORMATION UPDATED")
             return True

@@ -49,7 +49,7 @@ class InfoGatheringPhaseFour(AdminPageDatabase):
         self.__connection = connection
         admin_contents = File.read_to_list("admin.txt")
         for admin_page in tqdm(admin_contents, ncols=100):
-            self.__thread_semaphore.acquire()
+            self.__thread_semaphore.acquire(timeout=10)
             admin_url = URL.join_urls(self.__url, admin_page)
             t = Thread(target=self.add_if_page_found, args=(admin_url, ))
             t.start()
