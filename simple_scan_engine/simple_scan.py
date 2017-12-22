@@ -4,7 +4,7 @@ from threading import Thread
 from url.URL import URL
 from user_agent import UserAgent
 from bs4 import BeautifulSoup
-from client_side_bypass.form import HiddenFieldFinder
+from client_side_bypass.input import InputAnomaly
 from data_stores.sql.sql_injection import GetBasedSQLInjection
 
 
@@ -22,9 +22,7 @@ class SimpleScan:
     __requests_object = None
     __soup_object = None
     __poc_object = None
-    __banned_extensions = [
-        ".exe", ".jpg", ".png", ".mp4", ".pdf", ".mp3", ".zip"
-    ]
+    __banned_extensions = [".exe", ".jpg", ".png", ".mp4", ".pdf", ".mp3", ".zip"]
 
     __banned_names = ["drop", "delete", "erase", "reset", "remove", "clear"]
 
@@ -88,10 +86,5 @@ class SimpleScan:
             poc_object=self.__poc_object)
 
     def check_html_vulnerabilities(self):
-        HiddenFieldFinder(
-            project_id=self.__project_id,
-            thread_semaphore=self.__thread_sempahore,
-            database_semaphore=self.__database_semaphore,
-            connection=self.__connection,
-            soup_object=self.__soup_object,
-            url=self.__url)
+        InputAnomaly(project_id=self.__project_id, thread_semaphore=self.__thread_sempahore, database_semaphore=self.__database_semaphore,
+                     connection=self.__connection, soup_object=self.__soup_object, url=self.__url)
